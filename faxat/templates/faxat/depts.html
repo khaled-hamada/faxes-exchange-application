@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+    <div style="padding: 50px; width: 80%; " align='center' class="container" style="padding:20px; direction:rtl">
+      <table class="table table-primary table-info" style="direction:rtl">
+            <thead>
+              <tr>
+                <th scope="col">اسم الفرع</th>
+                <th scope="col">ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dep in depts %}
+              <tr>
+                <td>{{ dep.name }}</td>
+                <td>{{ dep.id }}</td>
+              </tr>
+
+              {% endfor %}
+
+            </tbody>
+          </table>
+    </div>
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

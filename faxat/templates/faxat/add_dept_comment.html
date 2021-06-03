@@ -1,0 +1,157 @@
+{% load static%}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+
+    </nav>
+
+    <div style="padding: 10px; width: 50%; " align='center' class="container">
+        <div style="padding: 10px; width: 30%;" align='left' class="container">
+
+              <a href="{%url 'viewfax-page' rel_fax%}" class="btn btn-primary" style="margin: 10px; width:100%;">رجوع</a>
+
+        </div>
+      <div class="jumbotron"  style="direction: rtl;">
+       <div class="modal-dialog modal-dialog-centered  modal-lg ">
+
+           <div class="modal-content">
+
+               <!-- header title -->
+               <div class="modal-header">
+                   <h5 class="modal-title text-centered"  id="staticBackdropLabel" >ملاحظات الفرع</h5>
+
+               </div>
+
+               <!-- Modal body, here defining the form -->
+               <div class="modal-body" style="height:100%;" >
+
+                 {%for comment in comments%}
+                 <div class="border border-primary m-1">
+
+
+                   <div class="" style="display:flex;">
+                     <div class="row m-1">
+
+
+                       <div class="col-sm-5" style="width:50%">
+                         <div class="form-group">
+
+                           <textarea class ="form-control"  rows="5" cols="70" id="txt" readonly> {{comment.dep_comment}}</textarea>
+
+                         </div>
+                       </div>
+                       <div class="col-sm-5 " style="width:50%; padding-right:20px; ">
+                         <div class="form-group">
+
+                           {%if comment.dep_document %}
+                           <a href="{{comment.dep_document.url}}" target="_blank"><img src="{{comment.dep_document.url}}" width="95%" height="40%" alt="اضغط هنا لرؤية الوثيقة"></a>
+                           {%endif%}
+                         </div>
+
+                       </div>
+                     </div>
+                   </div>
+
+                   <div class="row m-1" style="display:flex;">
+
+
+                     <div class="col-sm-4"  style="text-align: right;" >
+                       {% if 'عميد'  in comment.writer %}
+                        <label for="" style="color: blue; font-size:1.2em;"> إسم المستخدم :{{comment.writer}}</label>
+                       {%else%}
+                          <label for="" > إسم المستخدم :{{comment.writer}}</label>
+                        {%endif%}
+                     </div>
+                     <div class="col-sm-4">
+                       <!-- <label for="">{{comment.date}}</label> -->
+                       <label style="direction:ltr;">{{ comment.date|date:"SHORT_DATE_FORMAT"}} {{comment.date|time:"h:i a"}}</label>
+                     </div>
+
+                       <div class="col-sm-4" >
+                         {%if comment.seen == 1%}
+                           <p style= "color:green; " >&#x2714;&#x2714; - {{comment.seen_by}} </p>
+
+                         {%elif comment.seen == 0 %}
+                           <p style= "color:red;" >&#x2714;</p>
+                         {%endif%}
+                     </div>
+                   </div>
+
+                 </div>
+
+                 {%endfor%}
+
+
+                 <form class="container form-horizontal" method="POST" style="padding:20px; direction:rtl" enctype="multipart/form-data" id="m_comment">
+                    {% csrf_token %}
+                 <div class="border border-danger m-1"  style="display:flex;">
+
+
+                  <div class=" m-1" style="width:50%">
+                    <div class="form-group">
+                      <label for="txt">كتابة تعليق ..</label>
+                      <textarea class ="form-control" name="dept_comment" rows="8" cols="70" id="txt"></textarea>
+
+                    </div>
+                  </div>
+                  <div class=" m-1 " style="width:50%; padding-right:20px; ">
+                    <div class="form-group">
+                      <label for="img">ارفاق صورة / وثيقة / مقطع فيديو / صوتى</label>
+                      <br>
+                      <input type="file" class="form-control-file"  id="img"  name="dept_document" style="border:1px solid gray;">
+                    </div>
+                  </div>
+                 </div>
+
+                 <div class="col-sm-2" style="width:100%;">
+                   <input type="hidden" name="rel_fax" value="{{rel_fax_id}}" form="m_comment">
+                   <button type="submit" class="btn btn-primary">حفظ</button>
+                 </div>
+                 </form>
+
+               <!-- 4- modal body div -->
+               </div>
+
+
+            <!--3- modal conent div-->
+           </div>
+       <!--2- modal dialog scrollale-->
+       </div>
+       <!--1- modal fade main one -->
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="{% static 'faxat/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+  </body>
+</html>

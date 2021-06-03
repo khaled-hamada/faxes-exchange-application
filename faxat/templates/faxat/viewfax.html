@@ -1,0 +1,149 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="{% static 'faxat/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'faxat/style.css' %}" >
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+    <div style="padding: 10px; width: 50%; " align='center' class="container">
+        <div style="padding: 10px; width: 30%;" align='left' class="container">
+          <a href="{{ backurl }}" class="btn btn-info" style="margin: 10px; width:100%;">رجوع</a>
+        </div>
+    <div style="padding: 50px; width: 80%; " align='center' class="container bg-light">
+
+           <form class="container form-horizontal" method="POST" style="padding:20px; direction:rtl" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <div class="form-group col-sm-10">
+                <div  style="width:100%;">
+                  <label class="text-primary">رقم الصادر</label>
+                  <input type="text" name='sader' class="form-control" id="sader" value="{{ faxes.sader }}" required disabled>
+                </div>
+                <br>
+                <div class="responsive text-center " >
+                <div class="gallery text-danger fax-hover " style="font-size:1.5em ;border:4px solid rgb(53,125,145); border-radius:10px; ">
+
+                  <label class="">نسخة من الفاكس:</label>
+                  <a target="_blank" href="{{ faxes.url.url }}" class="text-danger"> معاينة الفاكس
+                  </a>
+                  </div>
+                </div>
+
+              
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10" style="width:100%;">
+                 <label class="text-primary">رقم صادر الادارة</label>
+                  <input type="text" name='sader_edara' class="form-control" id="sader_edara" value="{{ faxes.sader_edara }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+
+                <div class="col-sm-10" style="width:100%;">
+                  <label class="text-primary">عنوان الفاكس</label>
+                    <textarea name='title' class="form-control" id="title" rows="3"  readonly>{{ faxes.title }}</textarea>
+                </div>
+              </div>
+              <div class="col-sm-10">
+                  <div class="form-group purple-border">
+                    <label class="text-primary"> الفروع المرسل لها الفاكس</label><br>
+                    <label class="text-success" style="direction: rtl;"> {{ faxes.send_dept }}</label>
+                  </div>
+                </div>
+                <div class="col-sm-10">
+                  <div class="form-group purple-border">
+                    <label class="text-primary">الفروع المنوطة بالرد</label> <br>
+                    <label class="text-success" style="direction: rtl;"> {{ faxes.replay_dept }}</label>
+                  </div>
+                </div>
+              <div class="form-group" style="margin:10px; width:100%;">
+                <div class="col-sm-10">
+                  <div class="form-group purple-border">
+                    <label class="text-primary">التعليقات علي الفاكس</label>
+                    <textarea class="form-control" name="comments" id="comments" rows="3" disabled>{{ faxes.comments }}</textarea>
+                  </div>
+                </div>
+                <div class="form-group" style="margin:10px; width:100%;">
+                  <div class="col-sm-10">
+                    <div class="form-group purple-border">
+                      <label class="text-danger">رأى السيد نائــــب مدير المنــــطقة</label>
+                      <textarea class="form-control" name="manager_comments" id="manager_comments" rows="3" disabled>{{ faxes.v_manager_comments }}</textarea>
+                    </div>
+                  </div>
+                  <div class="col-sm-10">
+                    <div class="form-group purple-border">
+                        <label class="text-danger"> قرار السيد مدير المنــــطقة</label>
+                      <textarea class="form-control" name="manager_comments" id="manager_comments" rows="3" disabled>{{ faxes.manager_comments }}</textarea>
+                    </div>
+                  </div>
+                <div class="form-group">
+                <div class="col-sm-10" style="width:100%;">
+                  <label class="text-primary">تاريخ وصول الفاكس</label>
+                  <input type="text" style="direction:ltr;" name='data_added' class="form-control" value="{{ faxes.date_added|date:"SHORT_DATE_FORMAT"}} {{faxes.date_added|time:"h:i a"}}" id="data_added" disabled>
+                </div>
+                <div class="col-sm-10" style="width:100%;">
+                  <label class="text-primary">تاريخ التصديق علي الفاكس</label>
+                  <input type="text" style="direction:ltr;" name='data_added' class="form-control" value="{{ faxes.date_aproved|date:"SHORT_DATE_FORMAT"}} {{faxes.date_aproved|time:"h:i a"}}" id="data_added" disabled>
+                </div>
+
+                <div class="row text-danger">
+                  <div class="col-sm-6" style="width:100%;">
+                    <label class="">تمت رؤيته بواسطة</label>
+                    <input type="text" style="direction:ltr;"  class="form-control" value="{{dept_fax.seen_by}}" disabled>
+                  </div>
+                  <div class="col-sm-6" style="width:100%;">
+                    <label class="">بتاريخ</label>
+                    <input type="text" style="direction:ltr;"  class="form-control" value="{{ dept_fax.last_notified|date:"SHORT_DATE_FORMAT"}} {{dept_fax.last_notified|time:"h:i a"}}"  disabled>
+                  </div>
+
+                </div>
+                <br>
+                <div class="form-group">
+                    <label class="text-primary" for="sel1">حالة الفاكس</label><br>
+                    <label class="text-success" style="direction: rtl;">{{ status }}</label>
+                  </div>
+                {% if reply_status == 1 %}
+                <div class="form-group">
+                  <label class="text-danger" for="sel1">تغيير حالة الفاكس</label>
+                  <select class="form-control" id="status" name="status">
+                    <option value="0">تم وصول الفاكس</option>
+                    <option value="1">جاري العمل عليه</option>
+                    <option value="2">تم الانتهاء منه</option>
+                    <option value="3">تم الانتهاء منه و العرض على السيد مدير المنطقة </option>
+                  </select>
+                </div>
+                {%endif%}
+              </div>
+              </div>
+              {% if reply_status == 1 %}
+              <div class="form-group row " >
+
+                <div class="col-sm-6" >
+                  <a href="{%url 'comment-page-dept' dept_fax.id %}" class="btn btn-info" >إضافة تعليق / رد </a>
+                </div>
+
+                <div class="col-sm-6" >
+                  <button type="submit" class="btn btn-primary">حفظ</button>
+                </div>
+                </div>
+              {%endif%}
+
+          </form>
+    </div>
+
+    </body>
+</html>

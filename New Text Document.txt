@@ -1,0 +1,26 @@
+https://stackoverflow.com/questions/2723052/how-to-get-the-list-of-the-authenticated-users
+
+
+
+TRY to Combine both methods in your code
+Model and session query
+
+##
+# search for connect function in python and django
+https://www.geeksforgeeks.org/socket-programming-python/
+
+##
+https://stackoverflow.com/questions/953879/how-to-force-a-user-logout-in-django
+https://stackoverflow.com/questions/52960585/how-to-log-a-user-out-in-django-without-the-request
+
+
+###############
+git rev-parse --abbrev-ref origin/HEAD will print origin/<default-branch-name>.
+
+If the origin repository changes its default branch name, then git remote set-head origin -a will retrieve the new default branch name.
+
+ git pull origin <default-branch-name >  -> see expalnation above
+
+ # remove all edit   uncommit
+ git stash
+####

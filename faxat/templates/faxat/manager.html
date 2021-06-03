@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+      <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src= "{% static 'faxat/jquery-3.4.1.min.js' %}"></script>
+        <script src="{% static 'faxat/push.js' %}"></script>
+        <script src="{% static 'faxat/refresh.js' %}"></script>
+
+
+
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+
+    <div style="padding: 10px; width: 50%; " align='center' class="container">
+      <div style="padding: 10px; width: 30%;" align='left' class="container">
+        <a href="../manager_start" class="btn btn-info" style="margin: 10px; width:100%;">رجوع</a>
+      </div>
+    </div>
+      <div style="padding: 20px; width: 90%; margin-left: 5%" align='center'  direction:rtl>
+      <table class="table table-primary table-info" style="direction:rtl">
+            <thead>
+              <tr>
+                <th scope="col"> مسلسل </th>
+                <th scope="col">رقم الصادر</th>
+                <th scope="col">عنوان الفاكس</th>
+                <th scope="col">نسخة الفاكس</th>
+
+                <th scope="col">التعليقات</th>
+                <th scope="col">التصديق علي الفاكس</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for fax in faxes %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ fax.sader }}</td>
+                <td>{{ fax.title }}</td>
+                <td>
+                  <div class="responsive">
+                  <div class="gallery">
+                    <a target="_blank" href="{{ fax.url.url }}"> معاينة
+                    </a>
+                  </div>
+                </td>
+                </div>
+                <td>{{ fax.comments }}</td>
+
+                <td>
+                    <a class="btn btn-success" href="{% url 'edit-page' fax_id=fax.id%}" role="button">تصديق</a>
+                </td>
+                {%if fax.replay_to_edara%}
+                  <td>
+                    <div class="responsive">
+                    <div class="gallery">
+                      <a target="_blank" href="{{ fax.replay_to_edara.url }}" class="text-danger"> معاينة الرد ع الادارة
+                      </a>
+                    </div>
+                  </td>
+                {%endif%}
+              </tr>
+
+              {% endfor %}
+
+            </tbody>
+          </table>
+    </div>
+      {% if newfaxf == 1 %}
+      <audio id='ring' name='ring' autoplay="True" src="{% static 'faxat/ring.mp3' %}"></audio>
+      {% endif %}
+
+
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

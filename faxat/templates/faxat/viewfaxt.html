@@ -1,0 +1,205 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="{% static 'faxat/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'faxat/prevent_form_refresh.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'faxat/style.css' %}" >
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+
+    <div style="padding: 10px; width: 50%; " align='center' class="container">
+
+    <div style="padding: 50px; width: 90%; " align='center' class="container bg-light">
+
+           <form class="container form-horizontal" method="POST" style="padding:20px; direction:rtl" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <div class="form-group col-sm-10">
+                <div class="" style="width:100%;">
+                  <label class="text-primary">رقم الصادر</label>
+                  <input type="text" name='sader' class="form-control" id="sader" value="{{ faxes.sader }}"  readonly>
+                </div>
+                <br>
+                <div class="responsive ">
+                  <div class="gallery text-danger fax-hover" style="font-size:1.5em ;border:4px solid rgb(53,125,145);border-radius:10px; ">
+
+                  <label class="text-danger">نسخة من الفاكس:</label>
+                    <a target="_blank" href="{{ faxes.url.url }}"class="text-danger" > معاينة الفاكس
+                    </a>
+                  </div>
+                </div>
+                {%if faxes.replay_to_edara%}
+                      <br>
+                      <div class="responsive">
+                        <div class="gallery fax-hover" style="font-size:1.5em ;border:4px solid rgb(53,125,145); border-radius:10px;" >
+
+                        <label class="text-danger" ></label>
+                        <a target="_blank" href="{{ faxes.replay_to_edara.url }}" class="text-danger" > معاينة الرد ع الادارة
+                        </a>
+                        </div>
+                      </div>
+                {%endif%}
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10" style="width:100%;">
+                 <label class="text-primary">رقم صادر الادارة</label>
+                  <input type="text" name='sader_edara' class="form-control" id="sader_edara" value="{{ faxes.sader_edara }}" readonly>
+                </div>
+              </div>
+              <div class="form-group">
+
+                <div class="col-sm-10" style="width:100%;">
+                  <label class="text-primary">عنوان الفاكس</label>
+                  <!-- <input type="text" name='title' class="form-control" id="title" value="{{ faxes.title }}" readonly> -->
+                    <textarea name='title' class="form-control" id="title" rows="3"  readonly>{{ faxes.title }}</textarea>
+                </div>
+              </div>
+              <div class="col-sm-10">
+                  <div class="form-group purple-border">
+                    <label class="text-primary"> الفروع المرسل لها الفاكس</label><br>
+                    <label class="text-success" style="direction: rtl;"> {{ faxes.send_dept }}</label>
+                  </div>
+                </div>
+                <div class="col-sm-10">
+                  <div class="form-group purple-border">
+                    <label class="text-primary">الفروع المنوطة بالرد</label> <br>
+                    <label class="text-success" style="direction: rtl;"> {{ faxes.replay_dept }}</label>
+                  </div>
+                </div>
+
+                {%if faxes.fax_type == 1%}
+                <div class="col-sm-10">
+                  <div class="form-group purple-border ">
+                    <label class="text-danger">الفرع المرسل للفاكس</label> <br>
+                    <label class="text-success" style="direction: rtl;"> {{ faxes.come_from_dept }}</label>
+                  </div>
+                </div>
+              {% endif %}
+
+              <div class="form-group" style="margin:10px; width:100%;">
+                <div class="col-sm-10">
+                  <div class="form-group purple-border">
+                    <label class="text-primary">التعليقات علي الفاكس</label>
+                    <textarea class="form-control" name="comments" id="comments" rows="3" readonly>{{ faxes.comments }}</textarea>
+                  </div>
+                </div>
+                <div class="form-group" style="margin:10px; width:100%;">
+                  <div class="col-sm-10">
+                    <div class="form-group purple-border">
+                        <label class="text-danger">رأى السيد نائــــب مدير المنــــطقة</label>
+                        <textarea class="form-control" name="manager_comments" id="manager_comments" rows="3" readonly>{{  faxes.v_manager_comments }}</textarea>
+                    </div>
+                  </div>
+                  <div class="col-sm-10">
+                    <div class="form-group purple-border">
+                      <label class="text-danger"> قرار السيد مدير المنــــطقة</label>
+                      <textarea class="form-control" name="manager_comments" id="manager_comments" rows="3" readonly>{{ faxes.manager_comments }}</textarea>
+                    </div>
+                  </div>
+                <div class="form-group">
+                <div class="col-sm-10" style="width:100%;">
+                  <label class="text-primary">تاريخ وصول الفاكس</label>
+                  <input type="text" style="direction:ltr;" name='data_added' class="form-control" value="{{ faxes.date_added|date:"SHORT_DATE_FORMAT"}} {{faxes.date_added|time:"h:i a"}}" id="data_added" readonly>
+                </div>
+                <div class="col-sm-10" style="width:100%;">
+                  <label class="text-primary">تاريخ التصديق علي الفاكس</label>
+                  <input type="text" style="direction:ltr;" name='data_added' class="form-control" value="{{ faxes.date_aproved|date:"SHORT_DATE_FORMAT"}} {{faxes.date_aproved|time:"h:i a"}}" id="data_added" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="text-primary" for="sel1">حالة الفاكس</label><br>
+                    <ol>
+                    {% for dep in depts %}
+                      {%if dep.0 == "المتابعة"%}
+                        <li style="border:4px solid rgb(53,125,145);border-radius:10px;" >
+                      {%else%}
+                        <li>
+                      {%endif%}
+                        <label class="text-primary m-3" style="direction: rtl;" class="m-3">{{dep.0}} --- </label>
+                          {% if dep.1 == 'تم وصول الفاكس' %}
+                             <label class="text-danger" style="direction: rtl; ">{{dep.1}}</label><br>
+                          {% elif dep.1 == 'جاري العمل عليه' %}
+                             <label class="text-success" style="direction: rtl;">{{dep.1}}</label><br>
+                          {% elif dep.1 == 'تم الانتهاء منه' %}
+                            <label class="text-primary" style="direction: rtl;">{{dep.1}}</label><br>
+                          {% elif dep.1 == 'تم الانتهاء منه و العرض على السيد مدير المنطقة' %}
+                              <label class="text-info" style="direction: rtl;">{{dep.1}}</label><br>
+                          {%endif%}
+
+                          <div class="" style="display:flex; margin-right: 25%; justify-content: space-around;">
+                                {%if dep.2 == 1%}
+                                  <p style= "color:green; font-size:1.5em;" >&#x2714;&#x2714;</p>
+                                {%elif dep.2 == 0 %}
+                                  <p style= "color:gray;font-size:1.5em;" >&#x2714;</p>
+                                {%endif%}
+
+                            {%if user.groups.all.first.name == 'المدير' or user.groups.all.first.name ==  'المتابعة'%}
+
+
+                                  {%if  dep.6 == 1%}
+                                      <div style="width:100%;">
+                                        <!-- this will be a pop up form or modal to create a new decision -->
+                                        <a class="btn btn-success" href="{% url 'comment-page'  rel_fax=dep.4 %}" role="button" target="_blank">ملاحظات الفرع </a>
+                                      </div>
+                                      {%endif%}
+
+                                      <!--  add and remove ability to comming -->
+                                      {% if dep.6 == 0 %}
+                                          <div style="width:100%;">
+                                              <a class="btn btn-warning" href="{% url 'allow-commeting'  rel_fax=dep.4 %}" role="button" >إتاحة إمكانية الرد</a>
+                                          </div>
+                                      {% elif dep.6 == 1 %}
+
+                                        <div style="width:100%;">
+                                            <a class="btn btn-danger" href="{% url 'close-commeting'  rel_fax=dep.4 %}" role="button" >غلق إمكانية الرد</a>
+                                        </div>
+                                      {% endif %}
+
+
+                                      <div class="">
+                                        {%if dep.5 > 0 %}
+                                        <img src="{%static 'faxat/message.png' %}" alt="logo" height="25px" width="30px" style="vertical-align: text-bottom;">
+                                        <label for="" class="text-danger   " style="font-size:1.5em;">{{dep.5}}</label>
+                                    {%endif%}
+                                      </div>
+                              {%endif%}
+
+                          </div>
+                        {%if dep.2 == 1%}
+                          <div class="row text-danger form-group">
+                            <div class="col-sm-6" style="width:100%;">
+                              <label class="">تمت رؤيته بواسطة</label>
+                              <input type="text" style="direction:ltr;"   value="{{dep.7}}"  readonly>
+                            </div>
+                            <div class="col-sm-6" style="width:100%;">
+                              <label class="">بتاريخ</label>
+                              <input type="text" style="direction:ltr;"  value="{{ dep.8|date:"SHORT_DATE_FORMAT"}} {{dep.8|time:"h:i a"}}"  readonly>
+                            </div>
+
+                          </div>
+                        {%endif%}
+
+                        </li>
+                        <hr>
+                    {%endfor%}
+                  </ol>
+                  </div>
+
+              </div>
+              </div>
+          </form>
+    </div>
+
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'faxat/style.css' %}" >
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+      <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+    <a  class="btn btn-sm btn-danger m-2" href="{% url 'logout-page'  %}">تسجيل الخروج </a>
+    <a  class="btn btn-sm btn-success m-2" href="{% url 'search-page'  %}">بحث فى الارشيف</a>
+
+    <div style="padding: 50px;padding-bottom:0px; width: 35%; " align='center' class="container">
+          <!-- <div style="padding: 50px; width: 80%;" align='center' class="container"> -->
+            <!-- <a href="../newfax" class="btn btn-primary" style="margin: 10px; width:100%;">تسجيل فاكس جديد -- فاكس وارد </a> -->
+            <!-- <br> -->
+            <!-- <a href="../newfax_sader" class="btn btn-success" style="margin: 10px; width:100%;">تسجيل فاكس جديد -- فاكس صادر</a> -->
+            <!-- <br> -->
+            <a href="../takt" class="btn btn-warning" style="margin: 10px; width:100%;">فاكسات فرع التخطيط</a>
+            <br>
+            <!-- <a href="../unapproved" class="btn btn-danger" style="margin: 10px; width:100%;">الفاكسات الغير مصدق عليها </a> -->
+            <!-- <br> -->
+            <!-- <a href="{% url 'approved-page'  fax_type=0 %}" class="btn btn-primary" style="margin: 10px; width:100%;">الفاكسات المصدق عليها - الفاكسات الواردة </a> -->
+            <!-- <br> -->
+            <!-- <a href="{% url 'approved-page'  fax_type=1 %}" class="btn btn-success" style="margin: 10px; width:100%;">الفاكسات المصدق عليها - الفاكسات الصادرة</a> -->
+            <!-- <br> -->
+            <!-- <a href="{% url 'report-page'   %}" class="btn btn-warning" style="margin: 10px; width:100%;">تقرير يومى بالفاكسات المرسلة لأفــرع المنطقـة</a> -->
+            <!-- </div> -->
+
+
+
+    </div>
+
+   
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

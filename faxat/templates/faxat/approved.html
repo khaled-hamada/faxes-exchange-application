@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+    <div style="padding: 10px; width: 50%; " align='center' class="container">
+          <div style="padding: 10px; width: 30%;" align='left' class="container">
+            {%if  user.groups.all.first.name == 'المدير'%}
+                <a href="{% url 'manager-start-page'   %}" class="btn btn-info" style="margin: 10px; width:100%;">رجوع</a>
+            {%else %}
+                <a href="{% url 'takt-page'   %}" class="btn btn-info" style="margin: 10px; width:100%;">رجوع</a>
+            {%endif%}
+          </div>
+    </div>
+      <div style="padding: 20px; width: 90%; margin-left: 5%" align='center'  direction:rtl>
+      <h4 class="text-center">الفاكسات المصدق عليها </h4>
+      <table class="table table-primary table-info" style="direction:rtl">
+            <thead>
+              <tr>
+                <th scope="col"> مسلسل </th>
+                <th scope="col">رقم الصادر</th>
+                <th scope="col">عنوان الفاكس</th>
+                <th scope="col">نسخة الفاكس</th>
+                <th scope="col">مصدق عليه من قبل</th>
+                <th scope="col">تاريخ الوصول</th>
+                <th scope="col">تاريخ التصديق عليه</th>
+                <th scope="col">مشاهدة الفاكس</th>
+                <th scope="col">الرسائل الغير مقروءة</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for fax in faxes %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ fax.0.sader }}</td>
+                <td>{{ fax.0.title }}</td>
+                <td>
+                  <div class="responsive">
+                  <div class="gallery">
+                    <a target="_blank" href="{{fax.0.url.url}}"> مشاهدة الفاكس
+                    </a>
+                  </div>
+                </div>
+
+                </td>
+                <td style="color:blue;">{{ fax.0.approved_id }}</td>
+                <td style="direction:ltr;">{{ fax.0.date_added|date:"SHORT_DATE_FORMAT"}} {{fax.date_added|time:"h:i a"}}</td>
+                <td style="direction:ltr;">{{ fax.0.date_aproved|date:"SHORT_DATE_FORMAT"}} {{fax.date_aproved|time:"h:i a"}}</td>
+                <td>
+                    <a class="btn btn-success" href="{% url 'viewfaxt-page' fax_id=fax.0.id%}" role="button" target="_blank">مشاهدة</a>
+                </td>
+                {%if fax.1 > 0 %}
+                  <td class="text-danger">{{fax.1}}</td>
+                {% endif %}
+
+                <td>
+                {% if fax.0.is_removable and user.groups.all.first.name == 'المتابعة' %}
+                      <a class="btn btn-danger" href="{% url 'delete-fax' fax_id=fax.0.id%}" role="button">حذف</a>
+                {% endif %}
+              </td>
+              </tr>
+
+              {% endfor %}
+
+            </tbody>
+          </table>
+    </div>
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

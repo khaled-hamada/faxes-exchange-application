@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<style >
+@media print {
+
+
+    /* #reports-page h2 {
+        margin: 15px 0 25px 0;
+    } */
+
+
+  footer,nav {
+        display:none;
+    }
+    .print_none{
+        display:none;
+    }
+
+    /* .container {
+        width: auto;
+    }
+    header.reports-essential ,footer.reports-essential {
+        display:flex; /*flex*/
+        /* background-color: #fff;
+        color: #000;
+        font-size: 15px;
+    }
+    footer.reports-essential {
+        display:flex;
+        background-color: #fff;
+        color: #000;
+        font-size: 21px;
+    }
+
+    header.reports-essential {
+        padding-bottom: 5px;
+    }
+
+    footer.reports-essential {
+        padding-top: 15px;
+        display: none;
+    }
+
+
+    #reports-page .table {
+        font-size: 15px;
+    } */
+
+}
+
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <!-- <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::{{ dept.name }}</title> -->
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src= "{% static 'faxat/jquery-3.4.1.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'faxat/style.css' %}" >
+  </head>
+
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+
+    <div style="padding: 5px; width: 50%; " align='center' class="container print_none" >
+        <div style="padding: 5px; width: 30%;" align='left' class="container">
+          {%if  user.groups.all.first.name == 'المدير'%}
+              <a href="{%url 'manager-start-page'%}" class="btn btn-info" style="margin: 10px; width:100%;">رجوع</a>
+          {%else %}
+              <a href="{% url 'takt-page'   %}" class="btn btn-info" style="margin: 10px; width:100%;">رجوع</a>
+          {%endif%}
+        </div>
+      </div>
+
+        <!-- <form class="" action="" method="post">
+            {% csrf_token %}
+            <input type="date" name="search_date" value="">
+            <input type="submit" name="" value=""  style="visibility: hidden;">
+        </form> -->
+
+        <form method="post" class="print_none">
+          {%csrf_token%}
+          <div class="container select-date-big text-center font-weight-bold p-3 mb-4">
+            <div class="input-group ">
+              <div class="input-group-prepend">
+                <span class="input-group-text font-weight-bold rounded-0" id="inputGroup-sizing-sm"> من تاريخ </span>
+              </div>
+              <input type="date" name="from_date" class="form-control rounded-0" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required>
+
+
+              <div class="input-group-prepend mr-2">
+                <span class="input-group-text font-weight-bold rounded-0" id="inputGroup-sizing-sm">الى تاريخ</span>
+              </div>
+              <input type="date" name="to_date" class="form-control rounded-0" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm" required>
+
+              <button class="d-none" type="submit"></button>
+            </div>
+          </div>
+        </form>
+    <h4 class="text-center">  التمام اليومى للفاكسات
+      <br> عن الفتــرة من : {{from_date}} --   الى : {{to_date}} </h4>
+    <br>
+
+    <!-- <div class="main-report-div row "  > -->
+
+      <table class="table table-primary table-info text-center" style="padding: 20px; width: 90%; margin-right: 5%"  dir="rtl">
+          <thead>
+            <tr>
+              <th scope="col"> مسلسل </th>
+              <th scope="col"> الفرع </th>
+              <th scope="col">عدد الفاكسات المرسلة</th>
+              <th scope="col">عدد ما تم الاطلاع عليه </th>
+              <th scope="col">عدد ما لم يتم الاطلاع عليه </th>
+
+              <th scope="col">صفحة/صادر ما لم يتم الاطلاع عليه</th>
+
+              <th scope="col">عدد الرسائل المرسلة للفرع</th>
+              <th scope="col">عدد الرسائل الواردة من الفرع</th>
+              <th scope="col">نسبة كفاءة الفرع</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{item.0}}</td>
+              <td>{{item.1}}</td>
+              <td>{{item.2}}</td>
+              {%if item.3 > 0%}
+                  <td class="text-danger font-weight-bold font-italic">{{item.3}}</td>
+              {%else%}
+                <td>{{item.3}}</td>
+              {%endif%}
+
+
+              <td class="text-danger">
+                {%for i in item.4 %}
+                  <a class="" href="{% url 'viewfaxt-page' fax_id=i.0 %}" target="_blank">{{i.1}},</a>
+                {%endfor%}
+            </td>
+
+            {%if item.5 > 0%}
+                <td class="text-danger font-weight-bold font-italic">{{item.5}}</td>
+            {%else%}
+              <td>{{item.5}}</td>
+            {%endif%}
+
+            {%if item.6 > 0%}
+                <td class="text-danger font-weight-bold font-italic">{{item.6}}</td>
+            {%else%}
+              <td>{{item.6}}</td>
+            {%endif%}
+
+              <td class="text-danger font-weight-bold font-italic">{{item.7}} %</td>
+            </tr>
+
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+      </div>
+
+
+
+       
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

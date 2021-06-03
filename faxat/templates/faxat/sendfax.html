@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+    </nav>
+    <div style="padding: 10px; width: 50%; " align='center' class="container">
+          <div style="padding: 10px; width: 30%;" align='left' class="container">
+            <a href="../taktet" class="btn btn-info" style="margin: 10px; width:100%;">رجوع</a>
+          </div>
+    <div style="padding: 50px; width: 100%; " align='center' class="container">
+          <form class="container form-horizontal" method="POST" style="padding:20px; direction:rtl">
+            {% csrf_token %}
+               <div class="form-group">
+              <label for="sel1">اختر الفاكس</label>
+              <select class="form-control" id="sel1" name="fax">
+                {% for fax in approved %}
+                <option value="{{ fax.id }}">{{ fax.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sel1">اختر الفرع</label>
+              <select class="form-control" id="sel1" name="dept">
+                {% for dep in dept %}
+                <option value="{{ dep.id }}">{{ dep.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group" align="center">
+              <div class="col-sm-offset-2 col-sm-20">
+                <button type="submit" class="btn btn-success pull-right">ارسل</button>
+              </div>
+            </div>
+          </form>
+
+    </div>
+
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

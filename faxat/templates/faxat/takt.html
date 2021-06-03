@@ -1,0 +1,139 @@
+{% load static %}
+{%load auth_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::</title>
+    <!-- <title>منطقة تجنيد وتعبئة الزقازيق::منظومة الفاكسات::{{ dept.name }}</title> -->
+    <link rel="stylesheet" href="{% static 'faxat/bootstrap-4.3.1-dist/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src= "{% static 'faxat/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'faxat/push.js' %}"></script>
+    <script src="{% static 'faxat/refresh.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'faxat/style.css' %}" >
+  </head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark" style="direction:rtl">
+        <h4 style="direction:rtl" class="text-center text-light">وزارة الدفاع <br> هيئة التنظيم والادارة <br> ادارة التجنيد و التعبئة</h4>
+        <h4 style="direction:ltr" class="text-center text-light">منطقة تجنيد وتعبئة الزقازيق <br> فرع النظم <br> منظومةالفاكسات الجديدة</h4>
+
+    </nav>
+
+    <a  class="btn btn-sm btn-danger m-2" href="{% url 'logout-page'  %}">تسجيل الخروج </a>
+    <a  class="btn btn-sm btn-info m-2" href="{% url 'search-page'  %}">بحث فى الارشيف</a>
+    {%if  user|has_group:"CanSendFax" %}
+      <a href="../newfax_sader" class="btn btn-sm btn-success m-2" >تسجيل فاكس جديد -- فاكس صادر</a>
+    {%endif%}
+
+    {% if dept_name == 'المتابعة' %}
+    <a href="{% url 'approved-page'  fax_type=1 %}" class="btn btn-sm btn-success m-2" >الفاكسات المصدق عليها - الفاكسات الصادرة</a>
+    <a href="{% url 'approved-page'  fax_type=0 %}" class="btn btn-sm btn-primary m-2">الفاكسات المصدق عليها - الفاكسات الواردة </a>
+    <!-- <br> -->
+
+    <a href="../unapproved" class="btn btn-sm btn-danger m-2" >الفاكسات الغير مصدق عليها </a>
+    <a  class="btn btn-sm btn-warning m-2" href="{% url 'report-page'  %}">التقرير اليومى</a>
+
+    <a href="../newfax_sader" class="btn btn-sm btn-success m-2" >تسجيل فاكس جديد -- فاكس صادر</a>
+    <a href="../newfax" class="btn btn-sm btn-primary m-2" >تسجيل فاكس جديد -- فاكس وارد </a>
+    {% endif %}
+      <a  class="btn btn-sm btn-brown m-2" href="{% url 'change-password'  %}">تغيير كلمة السر</a>
+
+    <div style="padding-bottom: 50px; width: 25%; height:100px; font-size:1.5em; border:4px solid rgb(53,125,145);border-radius:10px; background-color:rgb(255,255,40);" align='center' class="container ">
+      <p>الفاكسات الواردة
+        {%if newfax_count >= 0 %}
+          <span style="color : red; ">: {{newfax_count}} </span>
+        {%endif%}
+      </p>
+      <p> الرسائل الواردة
+        {%if new_message_count >= 0 %}
+          <span style="color : red;">: {{new_message_count}} </span>
+        {%endif%}
+
+      </p>
+    </div>
+    <div style="padding: 20px; width: 90%; margin-left: 5%" align='center'  direction:rtl>
+      <h4 class="text-center">فاكسات {{dept_name}}</h4>
+      <table class="table table-primary table-info" style="direction:rtl">
+          <thead>
+            <tr>
+              <th scope="col"> مسلسل </th>
+              <th scope="col">رقم الصادر</th>
+              <th scope="col">رقم صادر الادارة</th>
+              <th scope="col">عنوان الفاكس</th>
+              <th scope="col">مصدق عليه من قبل</th>
+              <th scope="col">تاريخ الوصول</th>
+              <th scope="col">تاريخ التصديق عليه</th>
+              <th scope="col">مشاهدة الفاكس</th>
+              <th scope="col">حالة الفاكس</th>
+              <th scope="col">الاجراءات المطلوبة </th>
+              <th scope="col">الرسائل الغير مقروءة</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fax in faxes %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{ fax.0.sader }}</td>
+              <td>{{ fax.0.sader_edara }}</td>
+              <td>{{ fax.0.title }}</td>
+              <td style="color:blue;">{{ fax.0.approved_id }}</td>
+              <td style="direction:ltr;">{{ fax.0.date_added|date:"SHORT_DATE_FORMAT"}} {{fax.date_added|time:"h:i a"}}</td>
+              <td style="direction:ltr;">{{ fax.0.date_aproved|date:"SHORT_DATE_FORMAT"}} {{fax.date_aproved|time:"h:i a"}}</td>
+
+              <td>
+                  {%if request.user.groups.all.first.name == 'المتابعة' %}
+                    <a class="btn btn-success" href="{% url 'viewfaxt-page' fax_id=fax.0.id %}" role="button" target="_blank">مشاهدة</a>
+                  {%else%}
+                      <a class="btn btn-success" href="{% url 'viewfax-page' fax_id=fax.0.id %}" role="button">مشاهدة</a>
+                  {%endif%}
+              </td>
+              <td>
+                {%if fax.0.fax_type %}
+                  <label class="text-black" style="direction: rtl; ">{{'فاكس صادر '}}</label><br>
+                {% elif fax.1 == 0 %}
+                   <label class="text-danger" style="direction: rtl; ">{{'تم وصول الفاكس'}}</label><br>
+                {% elif fax.1 == 1 %}
+                   <label class="text-success" style="direction: rtl;">{{'جاري العمل عليه'}}</label><br>
+                {% elif fax.1 == 2 %}
+                  <label class="text-primary" style="direction: rtl;">{{'تم الانتهاء منه'}}</label><br>
+                {% elif fax.1 == 3 %}
+                    <label class="text-info" style="direction: rtl;">{{ 'تم الانتهاء منه و العرض على السيد مدير المنطقة'}}</label><br>
+                {%endif%}
+              </td>
+
+              <td>
+                <!-- check reply status for each fax -->
+                {% if fax.2 == 1%}
+                <label class="text-danger" style="direction: rtl;">{{'اتخاذ الاجراءات اللازمة'}}</label><br>
+
+                {%elif  fax.2 == 0%}
+                <label class="text-primary" style="direction: rtl;">{{'الاطلاع على نص الفاكس فقط'}}</label><br>
+
+                {%endif%}
+              </td>
+              {%if fax.3 > 0 %}
+                <td class="text-danger">{{fax.3}}</td>
+              {%endif%}
+            </tr>
+
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+    </div>
+        {% if un_notified_fax > 0 %}
+          <audio id='ring' name='ring' autoplay="True" src="{% static 'faxat/ring.mp3' %}"></audio>
+        {% endif %}
+
+        {% if un_notified_message > 0 %}
+          <audio id='ring_m' name='ring_m' autoplay="True" src="{% static 'faxat/ring.mp3' %}"></audio>
+        {% endif %}
+
+       
+      <script src="{% static 'faxat/bootstrap-4.3.1-dist/js/bootstrap.min.js' %}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
