@@ -137,7 +137,10 @@ def taktet(request):
 def newfax(request):
     global newfaxf
     depts = dept.objects.all()
-    next_fax_number = fax.objects.filter(fax_type=0).last().sader + 1
+    try :
+        next_fax_number = fax.objects.filter(fax_type=0).last().sader + 1
+    except :
+        next_fax_number = 1
     success = 0
     context ={
         'depts' : depts,
@@ -188,10 +191,15 @@ def newfax(request):
 @user_passes_test(lambda u: u.groups.filter(name__in=['المتابعة', 'CanSendFax']).count() != 0, login_url='/denied/')
 def newfax_sader(request):
     depts = dept.objects.all()
-    next_fax_number = fax.objects.filter(fax_type=1).last().sader + 1
+    main_dept = dept.objects.get(name="المتابعة")
+    try :
+         next_fax_number = fax.objects.filter(fax_type=1).last().sader + 1
+    except :
+        next_fax_number = 1
     success = 0
     context ={
         'depts' : depts,
+        'main_dept' : main_dept,
         'next_fax_number':next_fax_number,
         'success':success,
     }
@@ -263,6 +271,7 @@ def newfax_sader(request):
             'depts' : depts,
             'next_fax_number':next_fax_number,
             'success':success,
+            'main_dept':main_dept,
         }
         return render(request, 'faxat/new_fax_sader.html',context)
     else:

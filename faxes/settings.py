@@ -120,6 +120,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 import pathlib
-MEDIA_ROOT = pathlib.PureWindowsPath('//128.14.6.33/arsheef__nozom__pic/').drive
+# MEDIA_ROOT = pathlib.PureWindowsPath('//128.14.6.33/arsheef__nozom__pic/').drive
